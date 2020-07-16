@@ -1,22 +1,25 @@
 sudo: required
+
+language: generic
+
 services:
   - docker
 
 before_install:
-  - docker build -t sungjaejung1031/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t jsungjei/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run sungjaejung1031/react-test npm test -- --coverage
+  - docker run -e CI=true jsungjei/react-test npm test
 
 after_success:
-  - docker build -t sungjaejung1031/multi-client ./client
-  - docker build -t sungjaejung1031/multi-nginx ./nginx
-  - docker build -t sungjaejung1031/multi-server ./server
-  - docker build -t sungjaejung1031/multi-worker ./worker
+  - docker build -t jsungjei/multi-client ./client
+  - docker build -t jsungjei/multi-nginx ./nginx
+  - docker build -t jsungjei/multi-server ./server
+  - docker build -t jsungjei/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push sungjaejung1031/multi-client
-  - docker push sungjaejung1031/multi-nginx
-  - docker push sungjaejung1031/multi-server
-  - docker push sungjaejung1031/multi-worker
+  - docker push jsungjei/multi-client
+  - docker push jsungjei/multi-nginx
+  - docker push jsungjei/multi-server
+  - docker push jsungjei/multi-worker
