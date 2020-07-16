@@ -23,3 +23,16 @@ after_success:
   - docker push jsungjei/multi-nginx
   - docker push jsungjei/multi-server
   - docker push jsungjei/multi-worker
+
+deploy:
+  edge: true
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "multi-docker"
+  env: "MultiDocker-env-aws"
+  bucket_name: "elasticbeanstalk-us-east-2-817899714948"
+  bucket_path: "multi-docker"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
