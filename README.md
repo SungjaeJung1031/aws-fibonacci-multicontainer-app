@@ -4,13 +4,15 @@
 
 - [General info](#general-info)
 - [Project Overview](#project-overview)
-- [Setup](#setup)
-- [To-do List](#To-do-List)
 - [Reference](#reference)
 
 ## General Info
 
 This repository contains a project from the course, [Docker and Kubernete: The Complete Guide](https://www.udemy.com/docker-and-kubernetes-the-complete-guide). The project aims to build a simple web application using the [Amazon Web Service](https://cloud.google.com/) (AWS) Beanstalk, a set of tools and services including a web hosting service. I have built and host a React application on AWS.
+
+For the CI/CD, [Travis CI](https://travis-ci.org/) and [Github](https://github.com) are used. The workflow is as below. The whole workflow is described in the [./travis.yml](./.travis.yml). Once all codes are pushed to the Github. Github automatically pass them to the Travis CI. Travis CI tests run and make the production verion of the application and upload the on [Docker Hub](https://hub.docker.com/).
+
+<img src="./image/git_flow.jpg">
 
 ## Project Overview
 
@@ -26,7 +28,33 @@ The architecture is comprised of three main components, AWS Elastic Beanstalk In
 
 ### Elastic Beanstalk Instance
 
-Elastic Beanstalk can handle the deployment automatically from capacity provisioning, load balancing, auto-scaling to application health monitoring.
+Elastic Beanstalk can handle the deployment automatically from capacity provisioning, load balancing, auto-scaling to application health monitoring. In the Elastic Beanstalk Instance, the four docker containers are running. In the [Dockerrun.aws.json](Dockerrun.aws.json), the definitions of the containers are described as below
+
+    {
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+    {
+    "name": "client",
+    "image": "sungjaejung1031/multi-client", // For react server
+    ...
+    },
+    {
+    "name": "server",
+    "image": "sungjaejung1031/multi-server", // For express server
+    ...
+    },
+    {
+    "name": "worker",
+    "image": "sungjaejung1031/multi-worker", // For worker
+    ...
+    },
+    {
+    "name": "nginx",
+    "image": "sungjaejung1031/multi-nginx",  // For Nginx
+    ...
+    }
+
+The detail of the each container is described as following sections.
 
 1. Nginx
 
